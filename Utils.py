@@ -1,4 +1,5 @@
 import copy
+import random
 
 import numpy as np
 import pandas as pd
@@ -256,6 +257,46 @@ def find_cellines_with_drug(key_drug_synonyms, cell_line_ach_xxxxxx_list):
             if contains_nan:
                 continue
 
-            result.append(CellineData(index=index, drug_name=drug, sensitivity=celline_sensitivity))
+            result.append(CellineData(index=index, drug_name=drug, sampleid=sampleid, sensitivity=celline_sensitivity))
 
+    return result
+
+
+def show_cor_distribution(record_list):
+    pass
+
+
+def get_merged_class_name(class_str):
+    if class_str == 'Stable Disease' or class_str == 'Persistent Disease':
+        return 'Stable Disease/Persistent Disease'
+
+    if class_str == 'Partial Response' or class_str == 'Partial Remission/Response':
+        return 'Partial Remission/Response'
+
+    if class_str == 'Complete Remission/Response' or class_str == 'Complete Response':
+        return 'Complete Remission/Response'
+
+    return class_str
+
+
+def down_sampling(record_list):
+    dict_samples = {}
+    for record in record_list:
+        class_name = record.recist_score
+        class_record_list = dict_samples.get(class_name, None)
+        if class_record_list is None:
+            dict_samples[class_name] = []
+        dict_samples[class_name].append(record)
+
+    min_samples = 1000000
+    for k in dict_samples:
+        min_samples = min(len(dict_samples[k]), min_samples)
+
+    random.seed(2021)
+    result = []
+    for k in dict_samples:
+        if len(dict_samples[k]) == min_samples:
+            result.extend(dict_samples[k])
+        else:
+            result.extend(random.sample(dict_samples[k], min_samples))
     return result

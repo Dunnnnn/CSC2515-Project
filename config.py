@@ -12,3 +12,5 @@ SAMPLE_INFO_PATH = './raw_data/sample_info.csv'
 CELL_INFO_CCLE_PATH = './raw_data/cellinfo_CCLE.csv'
 
 AUCS_CCLE_PATH = './raw_data/AUCs_CCLE.csv'
+
+CCLE_EXPRESSION_PATH = './raw_data/CCLE_expression.csv'

@@ -14,10 +14,11 @@ class PatientRecord(object):
 
 
 class CellineData(object):
-    def __init__(self, index=0, drug_name='', sensitivity=None):
+    def __init__(self, index=0, drug_name='', sampleid='',sensitivity=None):
         self.index = index
         self.drug_name = drug_name
         self.sensitivity = sensitivity
+        self.sampleid = sampleid
 
 
 class FinalRecord(object):
