@@ -290,6 +290,7 @@ def down_sampling(record_list):
 
     min_samples = 1000000
     for k in dict_samples:
+        # print(k, len(dict_samples[k]))
         min_samples = min(len(dict_samples[k]), min_samples)
 
     random.seed(2021)
@@ -300,3 +301,25 @@ def down_sampling(record_list):
         else:
             result.extend(random.sample(dict_samples[k], min_samples))
     return result
+
+
+def draw_plots(record_list):
+    df = pd.DataFrame([vars(r) for r in record_list])
+    dict_drug_count = df['drug_name'].value_counts().to_dict()
+
+    import matplotlib.pyplot as plt
+    plt.bar(dict_drug_count.keys(), dict_drug_count.values())
+    plt.xlabel('Drug Name')
+    plt.ylabel('Number of Samples')
+    plt.savefig('plot/Drug distribution.png')
+    plt.close()
+
+    record_list = [r for r in record_list if r.drug_name == 'paclitaxel']
+    df = pd.DataFrame([vars(r) for r in record_list])
+    dict_class_count = df['recist_score'].value_counts().to_dict()
+    print(dict_class_count.keys())
+    plt.bar(['CR/R', 'PD', 'SD/PD', 'PR/R'], dict_class_count.values())
+    plt.xlabel('Class Name')
+    plt.ylabel('Number of Samples')
+    plt.savefig('plot/Class distribution paclitaxel.png')
+    plt.close()
