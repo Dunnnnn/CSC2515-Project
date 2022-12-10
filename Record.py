@@ -30,7 +30,7 @@ class FinalRecord(object):
         self.correlation = correlation
 
         self.ic50 = sensitivity['ic50_published']
-        self.aac = sensitivity['aac_published']
+        self.auc = 1-sensitivity['aac_published']
         self.amax = sensitivity['amax_published']
         self.HS = sensitivity['HS']
         self.E_inf = sensitivity['E_inf']

@@ -79,19 +79,34 @@ if __name__ == '__main__':
                 final_records.append(final_record)
     print(f'{patient_count} patients, {len(final_records)} records')
 
+    draw_plots(final_records)
+
+    final_records = [r for r in final_records if r.drug_name == 'paclitaxel']
+    final_records = [r for r in final_records if r.recist_score in ['Progressive Disease', 'Complete Remission/Response']]
     final_records = down_sampling(final_records)
 
     file_name = 'final.csv'
     df_final = pd.DataFrame([vars(r) for r in final_records])
+
+    df_final = df_final.drop(['patient_id', 'drug_name'], axis=1)
+    print(df_final['recist_score'].value_counts())
+
     df_final.to_csv(file_name, index=False)
     print(f'save to {file_name}')
 
-    df_gene_expression = pd.read_csv(CCLE_EXPRESSION_PATH)
-    print(df_gene_expression.shape)
-    ach_xxxxxx_list = df_final['celline'].unique().tolist()
-    df_gene_expression = df_gene_expression.loc[df_gene_expression['Unnamed: 0'].isin(ach_xxxxxx_list)]
-    print(len(ach_xxxxxx_list), df_gene_expression.shape)
-    df_gene_expression.to_csv('gene_expression_we_need.csv', index=False)
+    # print(df_final['drug_name'].value_counts())
+    #
+    # df_final_paclitaxel = df_final.loc[df_final['drug_name'] == 'paclitaxel']
+    # print(df_final_paclitaxel.shape)
+    # print(df_final_paclitaxel['patient_id'].value_counts())
+    # print(df_final_paclitaxel['recist_score'].value_counts())
+
+    # df_gene_expression = pd.read_csv(CCLE_EXPRESSION_PATH)
+    # print(df_gene_expression.shape)
+    # ach_xxxxxx_list = df_final['celline'].unique().tolist()
+    # df_gene_expression = df_gene_expression.loc[df_gene_expression['Unnamed: 0'].isin(ach_xxxxxx_list)]
+    # print(len(ach_xxxxxx_list), df_gene_expression.shape)
+    # df_gene_expression.to_csv('gene_expression_we_need.csv', index=False)
 
     # df_final_merged = df_final.merge(df_gene_expression, left_on='celline', right_on='Unnamed: 0')
     # df_final_merged = df_final_merged.drop('Unnamed: 0', axis=1)
